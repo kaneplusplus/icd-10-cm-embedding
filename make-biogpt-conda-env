@@ -1,0 +1,2 @@
+#!/bin/sh
+conda create --name biogpt torch transformers

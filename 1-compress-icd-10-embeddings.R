@@ -106,7 +106,7 @@ md$best_train_loss =
   )
 
 # Save the luz_models
-luz_model_dir = "luz_models"
+luz_model_dir = "luz-models"
 dir.create(luz_model_dir)
 md$model_path = NA
 for (i in seq_len(nrow(md))) {
@@ -121,17 +121,17 @@ for (i in seq_len(nrow(md))) {
 dir.create("autoencoder-models")
 
 torch_save(
-  (md |> filter(embedding_dim == 50, batch_size == 64))$model[[1]]$model, 
+  (md |> filter(embedding_dim == 50, batch_size == 128))$model[[1]]$model, 
   file.path("autoencoder-models", "icd10-050.pt")
 )
 
 torch_save(
-  (md |> filter(embedding_dim == 10, batch_size == 256))$model[[1]]$model, 
+  (md |> filter(embedding_dim == 10, batch_size == 128))$model[[1]]$model, 
   file.path("autoencoder-models", "icd10-010.pt")
 )
 
 torch_save(
-  (md |> filter(embedding_dim == 100, batch_size == 64))$model[[1]]$model, 
+  (md |> filter(embedding_dim == 100, batch_size == 256))$model[[1]]$model, 
   file.path("autoencoder-models", "icd10-100.pt")
 )
 

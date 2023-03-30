@@ -3,7 +3,7 @@ library(tidyr)
 
 source("autoencoder.R")
 
-embedding_dir = file.path("icd-10-embeddings", "2019")
+embedding_dir = file.path("icd-10-cm-embeddings", "2019")
 
 fn = file.path(embedding_dir, dir(embedding_dir))
 set.seed(123)
@@ -122,17 +122,17 @@ dir.create("autoencoder-models")
 
 torch_save(
   (md |> filter(embedding_dim == 50, batch_size == 128))$model[[1]]$model, 
-  file.path("autoencoder-models", "icd10-050.pt")
+  file.path("autoencoder-models", "icd10cm-050.pt")
 )
 
 torch_save(
   (md |> filter(embedding_dim == 10, batch_size == 128))$model[[1]]$model, 
-  file.path("autoencoder-models", "icd10-010.pt")
+  file.path("autoencoder-models", "icd10cm-010.pt")
 )
 
 torch_save(
   (md |> filter(embedding_dim == 100, batch_size == 256))$model[[1]]$model, 
-  file.path("autoencoder-models", "icd10-100.pt")
+  file.path("autoencoder-models", "icd10cm-100.pt")
 )
 
 md |> 

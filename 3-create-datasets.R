@@ -14,11 +14,11 @@ default_device = "mps"
 ae_model_paths = "autoencoder-models" |>
   (\(x) file.path(x, dir(x)))()
 
-icd10_embedding_paths = file.path("icd-10-embeddings", 2019:2022) |>
+icd10_embedding_paths = file.path("icd-10-cm-embeddings", 2019:2022) |>
   map( ~ file.path(.x, dir(.x)))
 
 icd10_code_paths = 2019:2022 |> 
-  map_chr(~file.path("icd-10-codes", sprintf("icd10cm_codes_%s.txt", .x)))
+  map_chr(~file.path("icd-10-cm-codes", sprintf("icd10cm_codes_%s.txt", .x)))
 
 xs = tibble(
   embed = map(icd10_embedding_paths, ICD10Embedding),
@@ -60,7 +60,7 @@ for (i in seq_len(nrow(xd))) {
     d, 
     file.path(
       "embedding-data", 
-      sprintf("icd-10-%s-%03d.csv", xd$year[i], xd$embedding_dim[i])
+      sprintf("icd-10-cm-%s-%03d.csv", xd$year[i], xd$embedding_dim[i])
     )
   )
 }

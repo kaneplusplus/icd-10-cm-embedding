@@ -68,16 +68,16 @@ create_embeddings = function(icd10, dir_name) {
 }
 
 # The directory where the embeddings will go, by year.
-dir.create("icd-10-embeddings")
+dir.create("icd-10-cm-embeddings")
 
 # Write the embeddings to their respective years.
 
 for (year in 2019:2022) {
   print(year)
-  icd10 = sprintf("icd-10-codes/icd10cm_codes_%s.txt", year) |>
+  icd10 = sprintf("icd-10-cm-codes/icd10cm_codes_%s.txt", year) |>
     read_fwf(fwf_cols(code = 8, desc = 150))
 
-  write_dir = file.path("icd-10-embeddings", year)
+  write_dir = file.path("icd-10-cs-embeddings", year)
   dir.create(write_dir)
 
   # Write the code, description, and embedding to a file with one file

@@ -14,7 +14,7 @@ default_device = "mps"
 ae_model_paths = "autoencoder-models" |>
   (\(x) file.path(x, dir(x)))()
 
-icd10_embedding_paths = file.path("icd-10-embeddings", 2019:2022) |>
+icd10_embedding_paths = file.path("icd-10-cm-embeddings", 2019:2022) |>
   map( ~ file.path(.x, dir(.x)))
 
 xs = tibble(

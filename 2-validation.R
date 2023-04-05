@@ -44,4 +44,7 @@ x = expand_grid(vds, xs)
 x$pred_error = 
   map_dbl(seq_len(nrow(x)), ~ pred_error(x$embed[[.x]], x$model[[.x]]))
 
-
+x |> 
+  arrange(year) |> 
+  select(-model, -embed) |>
+  saveRDS("year-validation.rds")

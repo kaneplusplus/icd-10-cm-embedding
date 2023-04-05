@@ -44,7 +44,7 @@ make_model = function(model_layers, batch_size, model_name, epochs = 10) {
         icd10_emb_train, 
         batch_size = batch_size, 
         shuffle = TRUE, 
-        num_workers = 2,
+        num_workers = 4,
         worker_packages = "torch"
       ),
       epochs = epochs,
@@ -52,7 +52,7 @@ make_model = function(model_layers, batch_size, model_name, epochs = 10) {
         icd10_emb_test, 
         batch_size = batch_size, 
         shuffle = TRUE, 
-        num_workers = 2,
+        num_workers = 4,
         worker_packages = "torch"
       ),
       callbacks = 
@@ -76,8 +76,9 @@ md$model = map(
   )
 )
 
+stop("here")
 
-md$embedding_dim = rep(c(1000, 100, 50, 10), 3)
+md$embedding_dim = rep(c(1000, 100, 50, 10), each = 3)
 
 epoch_plot = function(luz_model, take_log = FALSE) {
   ms = get_metrics(luz_model)
@@ -118,24 +119,27 @@ for (i in seq_len(nrow(md))) {
   md$model_path = model_path
 }
 
+md = md |> arrange(best_valid_loss, best_train_loss)
+
+mdo = md |> 
+  select(embedding_dim, batch_size, starts_with("best")) 
+
+saveRDS(mdo, "model-performance.rds")
+
 dir.create("autoencoder-models")
 
 torch_save(
-  (md |> filter(embedding_dim == 50, batch_size == 128))$model[[1]]$model, 
-  file.path("autoencoder-models", "icd10cm-050.pt")
-)
-
-torch_save(
-  (md |> filter(embedding_dim == 10, batch_size == 128))$model[[1]]$model, 
+  (md |> filter(embedding_dim == 10))$model[[1]]$model, 
   file.path("autoencoder-models", "icd10cm-010.pt")
 )
 
 torch_save(
-  (md |> filter(embedding_dim == 100, batch_size == 256))$model[[1]]$model, 
+  (md |> filter(embedding_dim == 50))$model[[1]]$model, 
+  file.path("autoencoder-models", "icd10cm-050.pt")
+)
+
+torch_save(
+  (md |> filter(embedding_dim == 100))$model[[1]]$model, 
   file.path("autoencoder-models", "icd10cm-100.pt")
 )
 
-md |> 
-  select(embedding_dim, batch_size, starts_with("best")) |> 
-  arrange(best_valid_loss, best_train_loss) |>
-  saveRDS("model-performance.rds")

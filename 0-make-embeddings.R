@@ -8,7 +8,6 @@ library(purrr)
 library(foreach)
 library(itertools)
 library(readr)
-library(readr)
 
 # Use the conda environment created from make-biogpt-conda-env
 use_condaenv("biogpt")
@@ -77,7 +76,7 @@ for (year in 2019:2022) {
   icd10 = sprintf("icd-10-cm-codes/icd10cm_codes_%s.txt", year) |>
     read_fwf(fwf_cols(code = 8, desc = 150))
 
-  write_dir = file.path("icd-10-cs-embeddings", year)
+  write_dir = file.path("icd-10-cm-embeddings", year)
   dir.create(write_dir)
 
   # Write the code, description, and embedding to a file with one file

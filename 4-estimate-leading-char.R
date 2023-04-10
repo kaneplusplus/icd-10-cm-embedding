@@ -64,7 +64,7 @@ for (i in seq_len(nrow(params))) {
 
   layers = c(train$width(), 100, 100, 21)
   batch_size = 64
-  epochs = 30
+  epochs = 50
 
   # Cross entropy
   loss = function(input, target) {
@@ -101,7 +101,7 @@ for (i in seq_len(nrow(params))) {
   luz_save(
     luz_model, 
     file.path("luz-supervised-models", 
-              sprintf("luz-model-%s.pt", params$emd_dim[i]))
+              sprintf("luz-model-%s.pt", params$emb_dim[i]))
   )
 
   preds = 

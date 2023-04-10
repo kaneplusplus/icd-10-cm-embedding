@@ -28,14 +28,15 @@ params = expand_grid(
 
 params$model_name = as.character(seq_len(nrow(params)))
 
-make_model = function(model_layers, batch_size, model_name, epochs = 10) {
+make_model = function(model_layers, batch_size, model_name, epochs = 30) {
 
   ret_luz = ICD10AutoEncoder |>
     setup(
       loss = nn_mse_loss(),
       optimizer = optim_adam
 #      metrics = list(
-#        luz_metric_mse()
+#        luz_metric_mse(),
+#        luz_metric_data_variation()
 #      )
     ) |>
     set_hparams(layers = model_layers) |>
@@ -57,7 +58,6 @@ make_model = function(model_layers, batch_size, model_name, epochs = 10) {
       ),
       callbacks = 
         list(
-          luz_callback_csv_logger(sprintf("output-%s.csv", model_name)),
           luz_callback_keep_best_model()
         )
     )
@@ -66,6 +66,7 @@ make_model = function(model_layers, batch_size, model_name, epochs = 10) {
 
 # The parameters and the models
 md = params
+
 
 md$model = map(
   seq_len(nrow(params)),
@@ -76,20 +77,9 @@ md$model = map(
   )
 )
 
-stop("here")
+browser()
 
 md$embedding_dim = rep(c(1000, 100, 50, 10), each = 3)
-
-epoch_plot = function(luz_model, take_log = FALSE) {
-  ms = get_metrics(luz_model)
-  p <- ggplot(ms, aes(x = epoch, y = value)) +
-    geom_point() + 
-    geom_line()
-  if (take_log) {
-    p = p + scale_y_log10()
-  }
-  p + facet_grid(metric ~ set, scales = "free_y")
-}
 
 # Best valid loss index
 bvli = map_int(md$model, ~ which.min(unlist(.x$records$metrics$valid)))
@@ -105,6 +95,7 @@ md$best_train_loss =
     seq_along(md$model), 
     ~ unlist(md$model[[.x]]$records$metrics$train[bvli[.x]])
   )
+
 
 # Save the luz_models
 luz_model_dir = "luz-models"
@@ -130,16 +121,21 @@ dir.create("autoencoder-models")
 
 torch_save(
   (md |> filter(embedding_dim == 10))$model[[1]]$model, 
-  file.path("autoencoder-models", "icd10cm-010.pt")
+  file.path("autoencoder-models", "icd10cm-0010.pt")
 )
 
 torch_save(
   (md |> filter(embedding_dim == 50))$model[[1]]$model, 
-  file.path("autoencoder-models", "icd10cm-050.pt")
+  file.path("autoencoder-models", "icd10cm-0050.pt")
 )
 
 torch_save(
   (md |> filter(embedding_dim == 100))$model[[1]]$model, 
-  file.path("autoencoder-models", "icd10cm-100.pt")
+  file.path("autoencoder-models", "icd10cm-0100.pt")
+)
+
+torch_save(
+  (md |> filter(embedding_dim == 1000))$model[[1]]$model, 
+  file.path("autoencoder-models", "icd10cm-1000.pt")
 )
 

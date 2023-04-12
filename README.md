@@ -1,7 +1,8 @@
 
-- [A Compressedd Large-Language Model Embedding Dataset of ICD-10-CM
-  Descriptions](#a-compressedd-large-language-model-embedding-dataset-of-icd-10-cm-descriptions)
-  - [Datasets](#datasets)
+- [Compressed, Large-Language-Model Embedded Datasets of ICD-10-CM
+  Descriptions](#compressed-large-language-model-embedded-datasets-of-icd-10-cm-descriptions)
+  - [License](#license)
+  - [ICD-10-CM Datasets](#icd-10-cm-datasets)
     - [2022](#2022)
     - [2021](#2021)
     - [2020](#2020)
@@ -11,24 +12,24 @@
     performance](#model-description-and-performance)
     - [Validating the dimension
       reduction](#validating-the-dimension-reduction)
-    - [Validating representation](#validating-representation)
+    - [Validating the embedding
+      representation](#validating-the-embedding-representation)
   - [An example using the embedding data in
     R](#an-example-using-the-embedding-data-in-r)
   - [Reproducing these results](#reproducing-these-results)
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# A Compressedd Large-Language Model Embedding Dataset of ICD-10-CM Descriptions
+# Compressed, Large-Language-Model Embedded Datasets of ICD-10-CM Descriptions
 
-[![License: CC BY-NC-SA
-4.0](https://img.shields.io/badge/License-CC_BY--NC--SA_4.0-lightgrey.svg)](https://creativecommons.org/licenses/by-nc-sa/4.0/)
-(data); [![License: GPL
-v2](https://img.shields.io/badge/License-GPL_v2-blue.svg)](https://www.gnu.org/licenses/old-licenses/gpl-2.0.en.html)
-(code)
+## License
 
-© Michael J. Kane (kaneplusplus at proton mail dot com)
+The code in this repository is licensed under [GPL
+vs](https://www.gnu.org/licenses/old-licenses/gpl-2.0.en.html) and the
+data are licenced under [CC BY-NC-SA
+4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/).
 
-## Datasets
+## ICD-10-CM Datasets
 
 ### 2022
 
@@ -254,7 +255,8 @@ appropriate layers.
 |                1000 |        256 |        30.435 |           0.803 |
 |                  50 |        128 |         1.053 |           0.894 |
 
-The autoencoder performance diagnostics.
+The autoencoder parameters and performance ordered by decreasing
+validation loss.
 
 The autoencoder compressing the LLM embedding was fit on the 2019
 ICD-10-CM descriptions for 20 epochs, with batch sizes 64, 128, and 256,
@@ -283,16 +285,16 @@ distribution.
 | 2022 |                 100 | 0.338 |                  0.049 |
 | 2022 |                1000 | 0.402 |                  0.058 |
 
-The autoencoder year validation performance
+The autoencoder year validation performance ordered by year.
 
 In addition to the 2019 validation the models selected for distribution
 were tested on the 2020-2022 data sets to ensure their performance is
 comparable over years. It should be noted that the ICD-10-CM codes do
 not vary too much so we should not expect large differences. As
 expected, the mean square error and coefficients of determination are
-similar to the 2019 data.
+similar to the 2019 data. Table @ref(tab:model_perf)
 
-### Validating representation
+### Validating the embedding representation
 
 As a final step in the validation process, we use the fact that in
 addition to the description, the ICD-10-CM codes themselves carry
@@ -312,23 +314,44 @@ categories as the dependent variable and the compressed embedding values
 as the indepedent values. The model consisted of two hidden layers with
 100 nodes each. The loss function selected was categorical
 cross-entropy. The model was trained using 30 epoch and a validation
-data set comprised of 10% of samples, chosen at random. The peformance
-is shown below.
+data set comprised of 10% of samples, chosen at random. The performance
+in terms of both the accuracy and the balanced accuracy is shown in the
+table below. As with most problems of this type, compression of the data
+corresponds to an increase in lost predictive information.
 
-| Sepal.Length | Sepal.Width | Petal.Length | Petal.Width | Species |
-|-------------:|------------:|-------------:|------------:|:--------|
-|          5.1 |         3.5 |          1.4 |         0.2 | setosa  |
-|          4.9 |         3.0 |          1.4 |         0.2 | setosa  |
-|          4.7 |         3.2 |          1.3 |         0.2 | setosa  |
-|          4.6 |         3.1 |          1.5 |         0.2 | setosa  |
-|          5.0 |         3.6 |          1.4 |         0.2 | setosa  |
-|          5.4 |         3.9 |          1.7 |         0.4 | setosa  |
+| Embedding Dimension | Accuracy | Balanced Accuracy |
+|--------------------:|---------:|------------------:|
+|                  10 |    0.815 |             0.698 |
+|                  50 |    0.925 |             0.873 |
+|                 100 |    0.935 |             0.891 |
+|                1000 |    0.960 |             0.927 |
 
-The supervised model performance.
+The supervised models’ performance ordered by increasing embedding
+dimension.
 
-The
+As a reminder, the goal in presenting these results is not to
+necessarily to maximize the prediction accuracy. It is to show that the
+embedding retains the hierarchical information in the ICD-10-CM codes.
+Some of the codes correspond to conditions that could be classified in
+several ways, and as a result coding for at least some of the conditions
+might be considered arbitrary. Based on this criteria, we can conclude
+the embedding does retain much of the structural and conceptual
+information denoted in the descriptions.
 
 ## An example using the embedding data in R
+
+To conclude, we present a simple example of how one might use the
+embedding information in the R programming environment. Suppose we would
+like to visualize the ICD-10-CM codes beginning with G (diseases of the
+nervous system), I (diseases of the circulatory system), J (diseases of
+the respiratory system), and K (diseases of the digestive system) to
+better understand the relationships between these categories or specific
+conditions in the the 50-dimensional embedding. For convenience, the
+projects page includes an `.rds` file containing the available
+embeddings along with their urls, which can be retrieved from the R
+console. The code categores can then be visualized by performing another
+dimension reduction (in this case we will use the Rtsne package), to 2
+dimensions and presented them to a scatter plot as shown below.
 
 ``` r
 library(dplyr)
@@ -339,12 +362,15 @@ library(stringr)
 
 # Download the locations of the embeddings.
 dl = readRDS(
-  "https://github.com/kaneplusplus/icd-10-cm-embedding/blob/main/icd10_dl.rds"
+#  "https://github.com/kaneplusplus/icd-10-cm-embedding/blob/main/icd10_dl.rds"
+  "icd10_dl.rds"
 )
 
+dl$url[dl$year == 2019 & dl$emb_dim == 50] = "embedding-data/icd-10-cm-2019-0050.csv"
+
 # Read in the unspecified injury codes.
-icd10s = read_csv(dl$url[dl$year == 2019 & dl$emb_dim = 50]) |>
-  filter(str_detect(code, "^(A|B|C|D)")) |>
+icd10s = read_csv(dl$url[dl$year == 2019 & dl$emb_dim == 50]) |>
+  filter(str_detect(code, "^(G|I|J|K)")) |>
   mutate(desc = tolower(desc)) |>
   filter(str_detect(desc, "^unspecified")) |>
   mutate(`Leading Letter` = str_sub(code, 1, 1)) |>
@@ -354,7 +380,7 @@ icd10s = read_csv(dl$url[dl$year == 2019 & dl$emb_dim = 50]) |>
 tsne_fit = icd10s |> 
   select(starts_with("V")) |>
   scale() |>
-  Rtsne()
+  Rtsne(perplexity = 10)
 
 # Bind the tSNE values to the data set.
 icd10p = bind_cols(
@@ -371,6 +397,13 @@ ggplot(icd10p, aes(x = tSNE1, y = tSNE2, color = `Leading Letter`)) +
   geom_point() +
   theme_minimal()
 ```
+
+![](README_files/figure-gfm/unnamed-chunk-2-1.png)<!-- -->
+
+The visualization shows that a subset of the circulatory diseases (I)
+and nervous system diseases (G) are well-differentiated from other
+conditions. It also shows overlap between other conditions related to K
+(digestive diseases), J (respiratory diseases), and I (circulatory).
 
 ## Reproducing these results
 
@@ -452,3 +485,5 @@ Scripts
       package representation of the fitted models.
     - The `supervised-model-perf.rds` files containing a `data.frame`
       summarizing the supervised model performance.
+
+© Michael J. Kane (kaneplusplus at proton mail dot com)

@@ -6,6 +6,7 @@ library(stringr)
 library(readr)
 library(tibble)
 library(tidyr)
+library(progress)
 
 source("autoencoder.R")
 
@@ -28,18 +29,24 @@ xs = tibble(
 
 vds = tibble(
   model = map(ae_model_paths, torch_load),
-  embedding_dim = str_extract(ae_model_paths, "\\d{3}") |> as.integer()
+  embedding_dim = str_extract(ae_model_paths, "\\d{4}") |> as.integer()
 )
 
 get_embedding = function(d, m, device = default_device) {
   m = m$to(device = device)
   ret = c()
-  loop(for (b in dataloader(d, batch_size = 100, num_workers = 6)) {
+  dl = dataloader(d, batch_size = 100, num_workers = 6)
+  pb = progress_bar$new(
+    format = "[:bar] :percent eta: :eta",
+    total = length(dl)
+  )
+  loop(for (b in dl) {
     xt = b$x$to(device = device)
     for (i in seq_len(length(m$decoder) / 2)) {
       x = xt
       xt = m$decoder[[i]](x)
     }
+    pb$tick()
     ret = rbind(ret, as.matrix(xt$to(device = "cpu")))
   })
   ret = as_tibble(as.data.frame(ret))
@@ -49,7 +56,7 @@ get_embedding = function(d, m, device = default_device) {
 xd = expand_grid(xs, vds)
 xd$embedding = map(
   seq_len(nrow(xd)), 
-  ~ get_embedding(xd$embed[[.x]], xd$model[[.x]])
+  ~ {print(.x); get_embedding(xd$embed[[.x]], xd$model[[.x]])}
 )
 
 dir.create("embedding-data")
@@ -60,7 +67,7 @@ for (i in seq_len(nrow(xd))) {
     d, 
     file.path(
       "embedding-data", 
-      sprintf("icd-10-cm-%s-%03d.csv", xd$year[i], xd$embedding_dim[i])
+      sprintf("icd-10-cm-%s-%04d.csv", xd$year[i], xd$embedding_dim[i])
     )
   )
 }

@@ -77,8 +77,6 @@ md$model = map(
   )
 )
 
-browser()
-
 md$embedding_dim = rep(c(1000, 100, 50, 10), each = 3)
 
 # Best valid loss index

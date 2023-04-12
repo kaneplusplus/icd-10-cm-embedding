@@ -43,7 +43,7 @@ params = tibble(
   embedding_files = 
     file.path(emb_data_dir, dir(emb_data_dir) |> str_subset("2019")),
   emb_dim = 
-    str_extract(embedding_files, "-\\d{3}\\.") |> str_extract("\\d{3}")
+    str_extract(embedding_files, "-\\d{4}\\.") |> str_extract("\\d{4}")
 )
 
 dir.create("luz-supervised-models")
@@ -64,7 +64,7 @@ for (i in seq_len(nrow(params))) {
 
   layers = c(train$width(), 100, 100, 21)
   batch_size = 64
-  epochs = 50
+  epochs = 30
 
   # Cross entropy
   loss = function(input, target) {
@@ -126,7 +126,14 @@ for (i in seq_len(nrow(params))) {
   )
 
   ms = c(ms, 
-    metric_set(accuracy, bal_accuracy)(comp, truth = obs, estimate = pred) 
+    list(
+      metric_set(accuracy, bal_accuracy)(comp, truth = obs, estimate = pred) 
+    )
   )
   print(ms)
 }
+
+params$accuracy = c(ms[[3]][1], ms[[6]][1], ms[[9]][1], ms[[12]][1])
+params$bal_accuracy = c(ms[[3]][2], ms[[6]][2], ms[[9]][1], ms[[12]][1])
+
+

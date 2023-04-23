@@ -7,6 +7,10 @@ library(readr)
 library(tibble)
 library(tidyr)
 library(progress)
+library(future)
+library(furrr)
+library(dplyr)
+plan(multicore, workers = 6)
 
 source("autoencoder.R")
 
@@ -36,8 +40,7 @@ get_embedding = function(d, m, device = default_device) {
   m = m$to(device = device)
   ret = c()
   dl = dataloader(d, batch_size = 100, num_workers = 6)
-  pb = progress_bar$new(
-    format = "[:bar] :percent eta: :eta",
+  pb = progress_bar$new( format = "[:bar] :percent eta: :eta",
     total = length(dl)
   )
   loop(for (b in dl) {
@@ -67,10 +70,24 @@ for (i in seq_len(nrow(xd))) {
     d, 
     file.path(
       "embedding-data", 
-      sprintf("icd-10-cm-%s-%04d.csv", xd$year[i], xd$embedding_dim[i])
+      sprintf("icd-10-cm-%s-%04d.csv.gz", xd$year[i], xd$embedding_dim[i])
     )
   )
 }
 
-
+for (year in 2019:2022) {
+  x = file.path("icd-10-cm-embeddings", year) |>
+    (\(x) file.path(x, dir(x)))() |>
+    future_map_dfr(~{
+      ret = readRDS(.x) 
+      ret = 
+        bind_cols(
+          ret[,1:2],
+          ret$emb[[1]] |> t() |> as.data.frame()
+        )
+      gc()
+      ret
+    })
+  write_csv(x, sprintf("embedding-data/icd-10-cm-%s-full.csv.gz", year))
+}
 

@@ -7,10 +7,11 @@ library(readr)
 library(tibble)
 library(tidyr)
 library(progress)
-library(future)
-library(furrr)
 library(dplyr)
-plan(multicore, workers = 6)
+library(itertools)
+library(foreach)
+library(doMC)
+registerDoMC(cores = 6)
 
 source("autoencoder.R")
 
@@ -76,10 +77,17 @@ for (i in seq_len(nrow(xd))) {
 }
 
 for (year in 2019:2022) {
-  x = file.path("icd-10-cm-embeddings", year) |>
-    (\(x) file.path(x, dir(x)))() |>
-    future_map_dfr(~{
-      ret = readRDS(.x) 
+  fns = file.path("icd-10-cm-embeddings", year) |>
+    (\(x) file.path(x, dir(x)))()
+  
+  dfs = foreach(it = isplitVector(fns, chunkSize = 1000),
+                .combine = bind_rows, 
+                .inorder = FALSE, .errorhandling = "remove",
+                .multicombine = TRUE) %do% {
+    print(tail(it, 1))
+    df = foreach(fn = it, .combine = bind_rows, 
+                 .errorhandling = "remove", .multicombine = TRUE) %dopar% {
+      ret = readRDS(fn) 
       ret = 
         bind_cols(
           ret[,1:2],
@@ -87,7 +95,11 @@ for (year in 2019:2022) {
         )
       gc()
       ret
-    })
-  write_csv(x, sprintf("embedding-data/icd-10-cm-%s-full.csv.gz", year))
+    }
+    print(nrow(df))
+    df
+  }
+  write_csv(dfs, sprintf("embedding-data/icd-10-cm-%s-full.csv", year))
 }
+
 

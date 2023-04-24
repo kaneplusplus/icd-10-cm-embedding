@@ -8,6 +8,10 @@ library(purrr)
 library(foreach)
 library(itertools)
 library(readr)
+library(tibble)
+library(doMC)
+library(iterators)
+registerDoMC(cores = 2)
 
 # Use the conda environment created from make-biogpt-conda-env
 use_condaenv("biogpt")
@@ -93,5 +97,4 @@ for (year in 2019:2022) {
     NULL
   }
 }
-
 

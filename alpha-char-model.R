@@ -8,7 +8,8 @@ library(readr)
 AlphaCharEmbedding = dataset(
   name = "AlphaCharEmbedding",
   initialize = function(icd10_emb, output_levels) {
-    self$x = icd10_emb
+    self$x = icd10_emb |>
+      collect()
     lc = contr.treatment(output_levels, contrasts = FALSE)
     adf = map_dfr(self$x$code, ~ lc[.x,])
     names(adf) = paste0("alpha_", names(adf))

@@ -75,8 +75,8 @@
 %%                                             %%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-%\def\includegraphic{}
-%\def\includegraphics{}
+\def\includegraphic{}
+\def\includegraphics{}
 
 %%% Put your definitions there:
 \startlocaldefs
@@ -526,19 +526,24 @@ library(Rtsne)
 library(stringr)
 
 # Download the locations of the embeddings.
-dl = readRDS(
-  paste0("https://github.com/kaneplusplus/",
-         "icd-10-cm-embedding/blob/main/icd10_dl.rds")
-  )
- 
- # Read in the specified injury codes.
-icd10s = dl$url[dl$year == 2019 & dl$emb_dim == 50] |>
-  read_csv()|>
+tf = tempfile()
+download.file(
+  "https://github.com/kaneplusplus/icd-10-cm-embedding/blob/main/icd10_dl.rds?raw=true",
+  tf
+)
+dl = readRDS(tf)
+
+# Read in the unspecified injury codes.
+tf = tempfile()
+download.file(
+  dl$url[dl$year == 2019 & dl$emb_dim == 50],
+  tf
+)
+
+icd10s = read_csv(tf) |>
   filter(str_detect(code, "^(G|I|J|K)")) |>
   mutate(desc = tolower(desc)) |>
-  filter(str_detect(desc, "^unspecified")) |>
-  mutate(`Leading Letter` = str_sub(code, 1, 1)) |>
-  distinct(pick(starts_with("V")), .keep_all = TRUE)
+  mutate(`Leading Letter` = str_sub(code, 1, 1)) 
 
 # Fit tSNE to the embedding.
 tsne_fit = icd10s |> 
@@ -549,13 +554,13 @@ tsne_fit = icd10s |>
 # Bind the tSNE values to the data set.
 icd10p = bind_cols(
   icd10s |>
-  select(-starts_with("V")),
+    select(-starts_with("V")),
   tsne_fit$Y |>
     as.data.frame() |>
     rename(tSNE1="V1", tSNE2="V2") |>
     as_tibble()
 )
- 
+
 # Visualize the results.
 ggplot(icd10p, aes(x = tSNE1, y = tSNE2, color = `Leading Letter`)) +
   geom_point() +
@@ -678,7 +683,8 @@ The authors declare that they have no competing interests.
 \section*{Figures}
 
 \begin{figure}[ht!]
-  \includegraphics[width=\linewidth]{tsne-plot.png}
+%  \includegraphics[width=\linewidth]{tsne-plot.png}
+  \includegraphics{tsne-plot.png}
   \caption{The tSNE plot of the codes.}
   \label{fig:tsne}
 \end{figure}

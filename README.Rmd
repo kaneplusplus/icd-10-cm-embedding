@@ -1,6 +1,6 @@
 ---
 output: 
-  word_document:
+  github_document:
     toc: true
     toc_depth: 3
 ---
@@ -153,19 +153,24 @@ library(Rtsne)
 library(stringr)
 
 # Download the locations of the embeddings.
-dl = readRDS(
-#  "https://github.com/kaneplusplus/icd-10-cm-embedding/blob/main/icd10_dl.rds"
-  "icd10_dl.rds"
+tf = tempfile()
+download.file(
+  "https://github.com/kaneplusplus/icd-10-cm-embedding/blob/main/icd10_dl.rds?raw=true",
+  tf
 )
-
-dl$url[dl$year == 2019 & dl$emb_dim == 50] = "embedding-data/icd-10-cm-2019-0050.csv"
+dl = readRDS(tf)
 
 # Read in the unspecified injury codes.
-icd10s = read_csv(dl$url[dl$year == 2019 & dl$emb_dim == 50]) |>
+tf = tempfile()
+download.file(
+  dl$url[dl$year == 2019 & dl$emb_dim == 50],
+  tf
+)
+
+icd10s = read_csv(tf) |>
   filter(str_detect(code, "^(G|I|J|K)")) |>
   mutate(desc = tolower(desc)) |>
-  mutate(`Leading Letter` = str_sub(code, 1, 1)) |>
-  distinct(pick(starts_with("V")), .keep_all = TRUE)
+  mutate(`Leading Letter` = str_sub(code, 1, 1)) 
 
 # Fit tSNE to the embedding.
 tsne_fit = icd10s |> 

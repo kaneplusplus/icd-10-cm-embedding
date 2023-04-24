@@ -1,13 +1,15 @@
 
 - [Compressed, Large-Language-Model Embedded Datasets of ICD-10-CM
   Descriptions](#compressed-large-language-model-embedded-datasets-of-icd-10-cm-descriptions)
+  - [Citing this work](#citing-this-work)
   - [License](#license)
+- [Funding](#funding)
   - [ICD-10-CM Datasets](#icd-10-cm-datasets)
     - [2022](#2022)
     - [2021](#2021)
     - [2020](#2020)
     - [2019](#2019)
-  - [Background and introduction](#background-and-introduction)
+  - [Overview](#overview)
   - [Model description and
     performance](#model-description-and-performance)
     - [Validating the dimension
@@ -22,188 +24,108 @@
 
 # Compressed, Large-Language-Model Embedded Datasets of ICD-10-CM Descriptions
 
+## Citing this work
+
+(add link to bioaRxiv)
+
 ## License
 
 The code in this repository is licensed under [GPL
-vs](https://www.gnu.org/licenses/old-licenses/gpl-2.0.en.html) and the
+v2](https://www.gnu.org/licenses/old-licenses/gpl-2.0.en.html) and the
 data are licenced under [CC BY-NC-SA
 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/).
+
+# Funding
+
+This work was supported by the National Institute on Aging of the
+National Institutes of Health (NIH) through a project grant to Yale
+University (1R01AG071528). The organizations funding this study had no
+role in the design or conduct of the study; in the collection,
+management, analysis, or interpretation of the data; or in the
+preparation, review, or approval of the manuscript. The content of this
+publication is solely the responsibility of the authors and does not
+necessarily represent the official views of the National Institutes of
+Health, the Department of Veterans Affairs, or the United States
+government.
 
 ## ICD-10-CM Datasets
 
 ### 2022
 
 1.  [ICD-10-CM,
-    10-dimensions](https://github.com/kaneplusplus/icd-10-cm-embedding/blob/main/embedding-data/icd-10-cm-2022-0010.csv?raw=true)
+    10-dimensions](https://github.com/kaneplusplus/icd-10-cm-embedding/blob/main/embedding-data/icd-10-cm-2022-0010.csv.gz?raw=true)
 2.  [ICD-10-CM,
-    50-dimensions](https://github.com/kaneplusplus/icd-10-cm-embedding/blob/main/embedding-data/icd-10-cm-2022-0050.csv?raw=true)
+    50-dimensions](https://github.com/kaneplusplus/icd-10-cm-embedding/blob/main/embedding-data/icd-10-cm-2022-0050.csv.gz?raw=true)
 3.  [ICD-10-CM,
-    100-dimensions](https://github.com/kaneplusplus/icd-10-cm-embedding/blob/main/embedding-data/icd-10-cm-2022-0100.csv?raw=true)
+    100-dimensions](https://github.com/kaneplusplus/icd-10-cm-embedding/blob/main/embedding-data/icd-10-cm-2022-0100.csv.gz?raw=true)
 4.  [ICD-10-CM,
-    1000-dimensions](https://github.com/kaneplusplus/icd-10-cm-embedding/blob/main/embedding-data/icd-10-cm-2022-1000.csv?raw=true)
+    1000-dimensions](https://github.com/kaneplusplus/icd-10-cm-embedding/blob/main/embedding-data/icd-10-cm-2022-1000.csv.gz?raw=true)
+5.  [ICD-10-CM,
+    1000-dimensions](https://github.com/kaneplusplus/icd-10-cm-embedding/blob/main/embedding-data/icd-10-cm-2022-1000.csv.gz?raw=true)
+6.  [ICD-10-CM, 42,384-dimensions (not
+    compressed)](https://github.com/kaneplusplus/icd-10-cm-embedding/blob/main/embedding-data/icd-10-cm-2022-full.csv.gz?raw=true)
 
 ### 2021
 
 1.  [ICD-10-CM,
-    10-dimensions](https://github.com/kaneplusplus/icd-10-cm-embedding/blob/main/embedding-data/icd-10-cm-2021-0010.csv?raw=true)
+    10-dimensions](https://github.com/kaneplusplus/icd-10-cm-embedding/blob/main/embedding-data/icd-10-cm-2021-0010.csv.gz?raw=true)
 2.  [ICD-10-CM,
-    50-dimensions](https://github.com/kaneplusplus/icd-10-cm-embedding/blob/main/embedding-data/icd-10-cm-2021-0050.csv?raw=true)
+    50-dimensions](https://github.com/kaneplusplus/icd-10-cm-embedding/blob/main/embedding-data/icd-10-cm-2021-0050.csv.gz?raw=true)
 3.  [ICD-10-CM,
-    100-dimensions](https://github.com/kaneplusplus/icd-10-cm-embedding/blob/main/embedding-data/icd-10-cm-2021-0100.csv?raw=true)
+    100-dimensions](https://github.com/kaneplusplus/icd-10-cm-embedding/blob/main/embedding-data/icd-10-cm-2021-0100.csv.gz?raw=true)
 4.  [ICD-10-CM,
-    1000-dimensions](https://github.com/kaneplusplus/icd-10-cm-embedding/blob/main/embedding-data/icd-10-cm-2021-1000.csv?raw=true)
+    1000-dimensions](https://github.com/kaneplusplus/icd-10-cm-embedding/blob/main/embedding-data/icd-10-cm-2021-1000.csv.gz?raw=true)
+5.  [ICD-10-CM, 42,384-dimensions (not
+    compressed)](https://github.com/kaneplusplus/icd-10-cm-embedding/blob/main/embedding-data/icd-10-cm-2021-full.csv.gz?raw=true)
 
 ### 2020
 
 1.  [ICD-10-CM,
-    10-dimensions](https://github.com/kaneplusplus/icd-10-cm-embedding/blob/main/embedding-data/icd-10-cm-2020-0010.csv?raw=true)
+    10-dimensions](https://github.com/kaneplusplus/icd-10-cm-embedding/blob/main/embedding-data/icd-10-cm-2020-0010.csv.gz?raw=true)
 2.  [ICD-10-CM,
-    50-dimensions](https://github.com/kaneplusplus/icd-10-cm-embedding/blob/main/embedding-data/icd-10-cm-2020-0050.csv?raw=true)
+    50-dimensions](https://github.com/kaneplusplus/icd-10-cm-embedding/blob/main/embedding-data/icd-10-cm-2020-0050.csv.gz?raw=true)
 3.  [ICD-10-CM,
-    100-dimensions](https://github.com/kaneplusplus/icd-10-cm-embedding/blob/main/embedding-data/icd-10-cm-2020-0100.csv?raw=true)
+    100-dimensions](https://github.com/kaneplusplus/icd-10-cm-embedding/blob/main/embedding-data/icd-10-cm-2020-0100.csv.gz?raw=true)
 4.  [ICD-10-CM,
-    1000-dimensions](https://github.com/kaneplusplus/icd-10-cm-embedding/blob/main/embedding-data/icd-10-cm-2020-1000.csv?raw=true)
+    1000-dimensions](https://github.com/kaneplusplus/icd-10-cm-embedding/blob/main/embedding-data/icd-10-cm-2020-1000.csv.gz?raw=true)
 
 ### 2019
 
 1.  [ICD-10-CM,
-    10-dimensions](https://github.com/kaneplusplus/icd-10-cm-embedding/blob/main/embedding-data/icd-10-cm-2019-0010.csv?raw=true)
+    10-dimensions](https://github.com/kaneplusplus/icd-10-cm-embedding/blob/main/embedding-data/icd-10-cm-2019-0010.csv.gz?raw=true)
 2.  [ICD-10-CM,
-    50-dimensions](https://github.com/kaneplusplus/icd-10-cm-embedding/blob/main/embedding-data/icd-10-cm-2019-0050.csv?raw=true)
+    50-dimensions](https://github.com/kaneplusplus/icd-10-cm-embedding/blob/main/embedding-data/icd-10-cm-2019-0050.csv.gz?raw=true)
 3.  [ICD-10-CM,
-    100-dimensions](https://github.com/kaneplusplus/icd-10-cm-embedding/blob/main/embedding-data/icd-10-cm-2019-0100.csv?raw=true)
+    100-dimensions](https://github.com/kaneplusplus/icd-10-cm-embedding/blob/main/embedding-data/icd-10-cm-2019-0100.csv.gz?raw=true)
 4.  [ICD-10-CM,
-    1000-dimensions](https://github.com/kaneplusplus/icd-10-cm-embedding/blob/main/embedding-data/icd-10-cm-2019-1000.csv?raw=true)
+    1000-dimensions](https://github.com/kaneplusplus/icd-10-cm-embedding/blob/main/embedding-data/icd-10-cm-2019-1000.csv.gz?raw=true)
+5.  [ICD-10-CM, 42,384-dimensions (not
+    compressed)](https://github.com/kaneplusplus/icd-10-cm-embedding/blob/main/embedding-data/icd-10-cm-2019-full.csv.gz?raw=true)
 
-## Background and introduction
+## Overview
 
-The ICD-10-CM (International Classification of Diseases, 10th Revision,
-Clinical Modification) is a standardized classification system for
-diagnosing diseases, disorders, and health conditions. Developed by the
-World Health Organization (WHO) and adapted for use in the United States
-by the National Center for Health Statistics (NCHS). The standard plays
-a crucial role in the analysis of electronic medical records (EMRs) or
-electronic health records (EHRs) for several reasons:
-
-1.  Consistency and Standardization: The ICD-10-CM allows for a
-    consistent and standardized method of coding and documenting medical
-    conditions across healthcare providers and facilities. This helps to
-    ensure accurate and uniform data exchange, analysis, and comparison.
-2.  Data Analysis and Research: The ICD-10-CM codes can be used to
-    analyze patient data for clinical research, epidemiological studies,
-    and public health surveillance. It helps to identify trends and
-    patterns in diseases, monitor the effectiveness of treatments, and
-    develop better prevention and management strategies.
-3.  Quality Measurement and Improvement: ICD-10-CM codes can be used to
-    evaluate the quality of care provided by healthcare facilities,
-    monitor patient outcomes, and identify areas for improvement. This
-    information can be used to enhance the overall healthcare delivery
-    system.
-4.  Reimbursement and Billing: ICD-10-CM codes play a vital role in
-    healthcare reimbursement by providing a standardized method to
-    classify and report medical conditions. Insurance companies and
-    other payers use these codes to determine appropriate payments for
-    medical services rendered.
-5.  Health Policy and Planning: ICD-10-CM codes help health authorities
-    and policymakers to identify population health needs, allocate
-    resources, and develop targeted healthcare policies and
-    interventions.
-
-While they do provide a consistent and comprehensive set of categories,
-their incorporation into statistical and machine learning analyses can
-be challenging for several reasons. First, in the 2019 version of the
-standard there are 71,932 categories and that number has increased since
-then with the 2022 version containing 72,750 categories. As a result,
-analyses using these codes, where the set of codes is not restricted to
-smaller set, must take into account their high-dimensionality or will
-require a large number of samples in order to fit consistent models.
-Second, categorical variables are usually incorporated into analyses
-with a contrast encoding such as treatment, one-hot, etc. Contrast
-numeric representations are orthogonal or, under appropriate statistical
-assumptions, independent. However, ICD-10-CM codes represent a
-hierarchical structure, where codes are organized into chapters, blocks,
-and categories based on the type and anatomical location of the diseases
-or conditions. Applying traditional contrast encoding methods like (eg.
-one-hot, treatment, etc.) may not fully capture this hierarchical
-information, potentially resulting in a loss of valuable context and
-relationships between codes.
-
-Researchers have considered alternative encoding methods or feature
-extraction techniques that can better represent the hierarchical
-structure of ICD-10-CM codes. However, incorporating both hierarchical
-structure and other contextual information in a general way can be
-difficult. The previous generation of word embeddings, which provide
-vector-encodings of words were shown effective for these types of tasks,
-with models like [med2vec providing improved abilities to predict
-patient
-mortality](https://academic.oup.com/jamiaopen/article/4/1/ooab022/6172949?login=false).
-Despite their advantages, word embeddings also have certain limitations.
-First, word embeddings are typically generated at the word or code
-level, which may not always be sufficient for capturing the hierarchical
-structure of ICD-10-CM codes. Second, the quality and representativeness
-of the word embeddings depend on the training data used to generate
-them. If the training data does not adequately cover the entire spectrum
-of medical conditions or encounters, the embeddings may not capture all
-relevant relationships or information. Third, Many word embeddings do
-not account for the specific context in which a code appears. This can
-limit their ability to capture the nuances of medical conditions and the
-relationships between them.
-
-Large language models (LLMs), address some of the shortcomings of
-traditional word embeddings through a combination of advanced techniques
-and architectures. Unlike traditional word embeddings that generate
-static representations, large language models generate contextualized
-embeddings. These embeddings take into account the surrounding words or
-tokens, allowing for a more nuanced representation of words and codes in
-different contexts. This helps in capturing the semantic relationships
-between codes more effectively. These models are pre-trained on vast
-amounts of text data, allowing them to learn general language
-representations before being fine-tuned for specific tasks. This
-pre-training enables the models to leverage existing knowledge and adapt
-more effectively to new tasks, even with limited task-specific data.
-Large language models can be incrementally updated or fine-tuned with
-new data, allowing them to adapt to evolving medical knowledge and
-practices more effectively than static word embeddings. And, while not
-explicitly designed for hierarchical data like ICD-10-CM codes, large
-language models can implicitly learn hierarchical relationships through
-their deep architectures and the context in which codes appear. This can
-help capture different levels of granularity and relationships between
-codes more effectively than traditional word embeddings.
-
-This paper describes data sets provided as csv files, mapping ICD-10-CM
-codes to embeddings (a numeric vector of values), based on their
-descriptions. The embeddings were generated using the [BioGPT Large
-Language
-Model](https://academic.oup.com/bib/article/23/6/bbac409/6713511?guestAccessKey=a66d9b5d-4f83-4017-bb52-405815c907b9&login=false),
-which was trained on the biomedical literature including PubMed, PubMed
-Central, and clinical notes from MIMIC-III. This model was shown to do a
-better job of encoding context and relational information than
-competitors in the medical domain. Since the dimension of the embedding
-LLM is of high dimension (~42,000), we provide dimension-reduced
-versions in 1,000, 100, 50, and 10 dimensions. The model generating the
-data were validated in two ways. The first validates the dimension
-reduction. The embedding data were compressed using an auto-encoder. The
-out-of-sample accuracy of a validation set is examined as well as the
-performance of the model for other versions (by year) of the ICD-10-CM
-specification. Our results show that we are able to reduce the dimension
-of the data down to 10 dimensions while maintaining the ability to
-reproduce the original embeddings with the fidelity decreasing as the
-reduced-dimension representation decreases. The second validates the
-conceptual representation by creating a supervised model to estimate the
-ICD-10-CM hiearchical categories. Again we see as the dimension of the
-compressed representation decreases the model accuracy decreases. Since
-multiple compression levels are provided, a user is free to choose
-whichever suits their needs, allowing them to trade off accuracy for
-dimensionality.
-
-The paper proceeds as follows. The next section provides a high level
-description of the BioGPT and the embedding along with the construction
-of the autoencoder used to reduce the dimension of the embedding
-representation. That section then provides validation for both the
-dimension reduction as well as the representation. The third section
-provides an example of how to use the dataset to cluster ICD-10-CM codes
-using the R programming environment. The final section describes how to
-reproduce all of the results presented here.
+The International Classification of Diseases, 10th Revision, Clinical
+Modification ([ICD-10-CM](https://www.cdc.gov/nchs/icd/icd-10-cm.htm))
+is a standardized classification system used for diagnosing diseases,
+disorders, and health conditions. It plays a crucial role in analyzing
+electronic medical records (EMRs) or electronic health records (EHRs).
+However, the high dimensionality of ICD-10-CM codes and their
+hierarchical structure make their incorporation into statistical and
+machine learning analyses challenging. Traditional contrast encoding
+methods like one-hot and treatment may not fully capture the
+hierarchical information of the codes. Large language models (LLMs)
+generate contextualized embeddings that capture the semantic
+relationships between codes more effectively. This repository provides
+data sets of ICD-10-CM codes mapped to embeddings generated using the
+[BioGPT Large Language
+Model](https://academic.oup.com/bib/article/23/6/bbac409/6713511?guestAccessKey=a66d9b5d-4f83-4017-bb52-405815c907b9&login=false).
+The embeddings provide informative input features for machine learning
+models, and dimension-reduced versions in 1,000, 100, 50, and 10
+dimensions are provided. Validation for both the dimension reduction and
+the representation of the embeddings are shown below. The readily
+available datasets are anticipated to be highly valuable for researchers
+incorporating ICD-10-CM codes into their analyses, retaining contextual
+information, and enabling more advanced analyses in the field.
 
 The data sets and code use to generate them are available at
 <https://github.com/kaneplusplus/icd-10-cs-embedding>. The data are
@@ -215,28 +137,16 @@ The code is licensed under
 
 ## Model description and performance
 
-The provided data are generated by embedding ICD-10-CM descriptions
-using the BioGPT-Large model, which comprises 1.5 billion parameters and
-is accessible via the Hugging Face repository. The embedding process
-involves tokenizing textual phrases into tokens (words, subwords, or
-characters) and mapping them to unique vocabulary IDs. Token IDs are
-passed through an embedding layer, resulting in a sequence of continuous
-embedding vectors. Positional encodings are added element-wise to these
-vectors, enabling the model to capture token order and relative
-positions. The embeddings are then contextualized by passing them
-through the model’s layers. An attention mask selectively controls
-information flow in the attention mechanism, allowing the model to weigh
-the importance of input tokens when generating contextualized embeddings
-in a 42,384 dimensional space.
-
-The embedding is then compressed using an auto encoder. The auto-encoder
-is a series of fully connected layers where the number of hidden nodes
-is approximately one order of magnitude smaller than the previous layer
-and then an order of magnitude larger until the output layer. For
-example the autoencoder compressing to 10 dimensions has layers of size
-42,384, 1,000, 100, 50, 10, 50, 100, 1,000, 42,384. Models whose
-dimension is large use them same structure while retaining only the
-appropriate layers.
+The data provided are generated by embedding ICD-10-CM descriptions
+using the BioGPT-Large model, which tokenizes textual phrases into
+tokens and maps them to unique vocabulary IDs, resulting in a sequence
+of continuous embedding vectors. The embeddings are then contextualized
+by passing them through the model’s layers with an attention mask. The
+embeddings are in a 42,384 dimensional space, which are then compressed
+using an auto-encoder with fully connected layers of decreasing and
+increasing sizes until the output layer. The autoencoder structure is
+the same for models with larger dimensions, with only the appropriate
+layers retained.
 
 ### Validating the dimension reduction
 
@@ -255,7 +165,7 @@ appropriate layers.
 |                1000 |        256 |        30.435 |           0.803 |
 |                  50 |        128 |         1.053 |           0.894 |
 
-The autoencoder parameters and performance ordered by decreasing
+The autoencoder parameters and performance ordered by increasing
 validation loss.
 
 The autoencoder compressing the LLM embedding was fit on the 2019
@@ -290,34 +200,24 @@ The autoencoder year validation performance ordered by year.
 In addition to the 2019 validation the models selected for distribution
 were tested on the 2020-2022 data sets to ensure their performance is
 comparable over years. It should be noted that the ICD-10-CM codes do
-not vary too much so we should not expect large differences. As
-expected, the mean square error and coefficients of determination are
-similar to the 2019 data. Table @ref(tab:model_perf)
+not vary much from one year to the the next, so we should not expect
+large differences. As expected, the mean square error and coefficients
+of determination are similar to the 2019 data.
 
 ### Validating the embedding representation
 
-As a final step in the validation process, we use the fact that in
-addition to the description, the ICD-10-CM codes themselves carry
-hierarchical information, which can be used to ensure that conceptual
-relationships are preserved in the compressed embeddings. In particular,
-the leading letter and two numeric values categorize codes. For example,
-codes A00-B99 correspond to infectious and parasitic diseases, C00-D49
-correspond to Neoplasms, etc. We can therefore ensure that at least some
-of the relevant relationships are preserved in the compressed embedding
-representation by confirming that the categories can be estimated at a
-rate higher than chance using a supervised model. Furthermore, we can
-quantify how much relevant predictive information is lost in
-lower-dimensional representations.
-
-The training data consists of a one-hot encoding of the ICD-10-CM
-categories as the dependent variable and the compressed embedding values
-as the indepedent values. The model consisted of two hidden layers with
-100 nodes each. The loss function selected was categorical
-cross-entropy. The model was trained using 30 epoch and a validation
-data set comprised of 10% of samples, chosen at random. The performance
-in terms of both the accuracy and the balanced accuracy is shown in the
-table below. As with most problems of this type, compression of the data
-corresponds to an increase in lost predictive information.
+To validate the compressed embeddings, the hierarchical information in
+the ICD-10-CM codes was used to ensure that relevant relationships were
+preserved. The leading letter and two numeric values categorize codes,
+allowing for the estimation of categories at a rate higher than chance
+using a supervised model. The training data was a one-hot encoding of
+the ICD-10-CM categories as the dependent variable and the compressed
+embedding values as the independent variable. The model consisted of two
+hidden layers with 100 nodes each, using categorical cross-entropy as
+the loss function. The model was trained using 30 epochs, and the
+performance in terms of accuracy and balanced accuracy was evaluated.
+The compressed embeddings result in an increase in lost predictive
+information, as is typical for this type of problem.
 
 | Embedding Dimension | Accuracy | Balanced Accuracy |
 |--------------------:|---------:|------------------:|
@@ -329,14 +229,12 @@ corresponds to an increase in lost predictive information.
 The supervised models’ performance ordered by increasing embedding
 dimension.
 
-As a reminder, the goal in presenting these results is not to
-necessarily to maximize the prediction accuracy. It is to show that the
+Of note, the goal in presenting these results is not to necessarily to
+maximize the prediction accuracy. Rather, it is to show that the
 embedding retains the hierarchical information in the ICD-10-CM codes.
 Some of the codes correspond to conditions that could be classified in
 several ways, and as a result coding for at least some of the conditions
-might be considered arbitrary. Based on this criteria, we can conclude
-the embedding does retain much of the structural and conceptual
-information denoted in the descriptions.
+might be considered non-systematic.
 
 ## An example using the embedding data in R
 
@@ -348,7 +246,7 @@ the respiratory system), and K (diseases of the digestive system) to
 better understand the relationships between these categories or specific
 conditions in the the 50-dimensional embedding. For convenience, the
 projects page includes an `.rds` file containing the available
-embeddings along with their urls, which can be retrieved from the R
+embeddings along with their URLs, which can be retrieved from the R
 console. The code categores can then be visualized by performing another
 dimension reduction (in this case we will use the Rtsne package), to 2
 dimensions and presented them to a scatter plot as shown below.
@@ -361,20 +259,24 @@ library(Rtsne)
 library(stringr)
 
 # Download the locations of the embeddings.
-dl = readRDS(
-#  "https://github.com/kaneplusplus/icd-10-cm-embedding/blob/main/icd10_dl.rds"
-  "icd10_dl.rds"
+tf = tempfile()
+download.file(
+  "https://github.com/kaneplusplus/icd-10-cm-embedding/blob/main/icd10_dl.rds?raw=true",
+  tf
 )
-
-dl$url[dl$year == 2019 & dl$emb_dim == 50] = "embedding-data/icd-10-cm-2019-0050.csv"
+dl = readRDS(tf)
 
 # Read in the unspecified injury codes.
-icd10s = read_csv(dl$url[dl$year == 2019 & dl$emb_dim == 50]) |>
+tf = tempfile()
+download.file(
+  dl$url[dl$year == 2019 & dl$emb_dim == 50],
+  tf
+)
+
+icd10s = read_csv(tf) |>
   filter(str_detect(code, "^(G|I|J|K)")) |>
   mutate(desc = tolower(desc)) |>
-  filter(str_detect(desc, "^unspecified")) |>
-  mutate(`Leading Letter` = str_sub(code, 1, 1)) |>
-  distinct(pick(starts_with("V")), .keep_all = TRUE)
+  mutate(`Leading Letter` = str_sub(code, 1, 1)) 
 
 # Fit tSNE to the embedding.
 tsne_fit = icd10s |> 
@@ -411,6 +313,7 @@ R version: \>= 4.2
 
 R package dependencies:
 
+- `arrow`
 - `torch`
 - `reticulate`
 - `dplyr`

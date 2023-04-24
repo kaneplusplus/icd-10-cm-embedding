@@ -164,7 +164,6 @@ dl$url[dl$year == 2019 & dl$emb_dim == 50] = "embedding-data/icd-10-cm-2019-0050
 icd10s = read_csv(dl$url[dl$year == 2019 & dl$emb_dim == 50]) |>
   filter(str_detect(code, "^(G|I|J|K)")) |>
   mutate(desc = tolower(desc)) |>
-#  filter(str_detect(desc, "^unspecified")) |>
   mutate(`Leading Letter` = str_sub(code, 1, 1)) |>
   distinct(pick(starts_with("V")), .keep_all = TRUE)
 

@@ -1,8 +1,5 @@
 ---
-output: 
-  github_document:
-    toc: true
-    toc_depth: 3
+output: github_document
 ---
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->

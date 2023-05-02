@@ -23,9 +23,9 @@ knitr::opts_chunk$set(
  year = {2023},
  doi = {10.1101/2023.04.24.23289046},
  publisher = {Cold Spring Harbor Laboratory Press},
-  URL = {https://www.medrxiv.org/content/early/2023/04/26/2023.04.24.23289046},
-  eprint = {https://www.medrxiv.org/content/early/2023/04/26/2023.04.24.23289046.full.pdf},
-  journal = {medRxiv}
+ URL = {https://www.medrxiv.org/content/early/2023/04/26/2023.04.24.23289046},
+ eprint = {https://www.medrxiv.org/content/early/2023/04/26/2023.04.24.23289046.full.pdf},
+ journal = {medRxiv}
 }
 ```
 
@@ -207,6 +207,39 @@ The visualization shows that a subset of the circulatory diseases (I) and
 nervous system diseases (G) are well-differentiated from other conditions. It
 also shows overlap between other conditions related to K (digestive diseases), 
 J (respiratory diseases), and I (circulatory).
+
+## A SAS example
+
+```sas
+/* Options */
+%let dlyear=2019;     /* code year; can be 2019, 2020, 2021, 2022 */
+%let dldim=50;        /* encoding dimensions; can be 1000, 100, 50, 10 */
+%let tempdir=D:;      /* directory for temporary file */
+%let pathsep=\;       /* path separator; \ for Windows, / for *NIX */
+%let dsname=icd10cm;  /* name for the final dataset */
+%let target=icd-10-cm-&dlyear-%sysfunc(putn(&dldim,z4.)).csv.gz;
+%let tempfile=&tempdir&pathsep&target;
+
+/* Download gzipped file to a temp location */
+/* -- filename url and filename zip methods don't stack */
+filename rawdl "&tempfile";
+proc http
+  url="https://github.com/kaneplusplus/icd-10-cm-embedding/raw/main/embedding-data/&target"
+  out=rawdl;
+run;
+
+/* Read the downloaded temp file into a dataset */
+filename codes ZIP "&tempfile" GZIP;
+%macro vlist;
+  %local i;
+  %do i=1 %to &dldim; V&i %end;
+%mend;
+data &dsname;
+  informat code $4. desc $256. %vlist best.;
+  infile codes delimiter=',' firstobs=2 dsd;
+  input code $ desc $ %vlist;
+run;
+```
 
 ## Reproducing these results
 

@@ -12,14 +12,14 @@ output: md_document
 
 ```
 @article{kane2023llm
-  author = {Michael J. Kane and Denise Esserman and Nancy K. Latham and Erich J. Greene and David A. Ganz},
+  author = {Michael J. Kane and Casey King and Denise Esserman and Nancy K. Latham and Erich J. Greene and David A. Ganz},
   title = {A Compressed Large Language Model Embedding Dataset of ICD 10 CM Descriptions},
   elocation-id = {2023.04.24.23289046},
   year = {2023},
   doi = {10.1101/2023.04.24.23289046},
   publisher = {Cold Spring Harbor Laboratory Press},
-  URL = {https://www.medrxiv.org/content/early/2023/04/26/2023.04.24.23289046},
-  eprint = {https://www.medrxiv.org/content/early/2023/04/26/2023.04.24.23289046.full.pdf},
+  URL = {https://www.medrxiv.org/content/early/2023/05/15/2023.04.24.23289046.1},
+  eprint = {https://www.medrxiv.org/content/early/2023/05/15/2023.04.24.23289046.1.full.pdf},
   journal = {medRxiv}
 }
 ```
@@ -175,6 +175,7 @@ library(dplyr)
 library(ggplot2)
 library(readr)
 library(Rtsne)
+#> Error in library(Rtsne): there is no package called 'Rtsne'
 library(stringr)
 
 # Download the locations of the embeddings.
@@ -202,6 +203,7 @@ tsne_fit = icd10s |>
   select(starts_with("V")) |>
   scale() |>
   Rtsne(perplexity = 10)
+#> Error in Rtsne(scale(select(icd10s, starts_with("V"))), perplexity = 10): could not find function "Rtsne"
 
 # Bind the tSNE values to the data set.
 icd10p = bind_cols(
@@ -212,14 +214,14 @@ icd10p = bind_cols(
     rename(tSNE1="V1", tSNE2="V2") |>
     as_tibble()
 )
+#> Error in eval(expr, envir, enclos): object 'tsne_fit' not found
 
 # Visualize the results.
 ggplot(icd10p, aes(x = tSNE1, y = tSNE2, color = `Leading Letter`)) +
   geom_point() +
   theme_minimal()
+#> Error in eval(expr, envir, enclos): object 'icd10p' not found
 ```
-
-![plot of chunk unnamed-chunk-2](figure/unnamed-chunk-2-1.png)
 
 The visualization shows that a subset of the circulatory diseases (I) and
 nervous system diseases (G) are well-differentiated from other conditions. It

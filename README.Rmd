@@ -17,14 +17,14 @@ knitr::opts_chunk$set(
 
 ```
 @article{kane2023llm
-  author = {Michael J. Kane and Denise Esserman and Nancy K. Latham and Erich J. Greene and David A. Ganz},
+  author = {Michael J. Kane and Casey King and Denise Esserman and Nancy K. Latham and Erich J. Greene and David A. Ganz},
   title = {A Compressed Large Language Model Embedding Dataset of ICD 10 CM Descriptions},
   elocation-id = {2023.04.24.23289046},
   year = {2023},
   doi = {10.1101/2023.04.24.23289046},
   publisher = {Cold Spring Harbor Laboratory Press},
-  URL = {https://www.medrxiv.org/content/early/2023/04/26/2023.04.24.23289046},
-  eprint = {https://www.medrxiv.org/content/early/2023/04/26/2023.04.24.23289046.full.pdf},
+  URL = {https://www.medrxiv.org/content/early/2023/05/15/2023.04.24.23289046.1},
+  eprint = {https://www.medrxiv.org/content/early/2023/05/15/2023.04.24.23289046.1.full.pdf},
   journal = {medRxiv}
 }
 ```

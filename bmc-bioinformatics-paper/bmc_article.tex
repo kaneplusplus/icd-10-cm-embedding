@@ -97,7 +97,7 @@
 %%                                          %%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\title{A Compressed Large Language Model Embedding Dataset of ICD 10 CM 
+\title{A Compressed Language Model Embedding Dataset of ICD 10 CM 
 Descriptions}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -121,11 +121,15 @@ Descriptions}
   email={michael.kane@yale.edu}   % email address
 ]{\inits{M.J.}\fnm{Michael J.} \snm{Kane}}
 \author[
+  addressref={aff2,aff3},
+  email={casey.king@yale.edu}
+]{\inits{C.}\fnm{Casey} \snm{King}}
+\author[
   addressref={aff1},
   email={denise.esserman@yale.edu}
 ]{\inits{D.}\fnm{Denise} \snm{Esserman}}
 \author[
-  addressref={aff2},
+  addressref={aff4},
   email={nklatham@bwh.harvard.edu}
 ]{\inits{N.K.}\fnm{Nancy K.} \snm{Latham}}
 \author[
@@ -133,7 +137,7 @@ Descriptions}
   email={erich.greene@yale.edu}
 ]{\inits{E.}\fnm{Erich J.} \snm{Greene}}
 \author[
-  addressref={aff3},
+  addressref={aff5},
   email={dganz@mednet.ucla.edu}
 ]{\inits{D.A.}\fnm{David A.} \snm{Ganz}}
 
@@ -154,6 +158,22 @@ Descriptions}
   \cny{USA}                                    % country
 }
 \address[id=aff2]{%
+  \orgdiv{The Jackson School of Global Affairs}
+  \orgname{Yale University},
+  %\street{},
+  %\postcode{}
+  \city{New Haven},
+  \cny{USA}
+}
+\address[id=aff3]{%
+  \orgdiv{US Healthcare and Life Sciences}
+  \orgname{Microsoft},
+  %\street{},
+  %\postcode{}
+  \city{Redmond},
+  \cny{USA}
+}
+\address[id=aff4]{%
   \orgdiv{Research Program in Men’s Health: Aging and Metabolism, Boston Claude D. Pepper Older Americans Independence Center for Function Promoting Therapies}
   \orgname{Brigham and Women’s Hospital},
   %\street{},
@@ -161,7 +181,7 @@ Descriptions}
   \city{Boston},
   \cny{USA}
 }
-\address[id=aff3]{%
+\address[id=aff5]{%
   \orgdiv{Department of Medicine}
   \orgname{VA Greater Los Angeles/UCLA},
   %\street{},
@@ -203,10 +223,11 @@ Descriptions}
 
 This paper presents novel datasets providing numerical representations of 
 ICD-10-CM codes by generating description embeddings using a large language 
-model and applying autoencoders for dimensionality reduction. The embeddings 
+model followed by a dimension reduction via autoencoder. The embeddings 
 serve as informative input features for machine learning models by capturing 
-relationships among categories and preserving inherent information. The model 
-generating the data was validated in two ways. Firstly, the dimension 
+relationships among categories and preserving inherent context information. 
+The model 
+generating the data was validated in two ways. First, the dimension 
 reduction was validated using an autoencoder, and secondly, a supervised model 
 was created to estimate the ICD-10-CM hierarchical categories. Results show 
 that the dimension of the data can be reduced to as few as 10 dimensions 
@@ -306,7 +327,7 @@ the effectiveness of treatments, and develop better prevention and management
 strategies.}
 \item{Quality Measurement and Improvement: ICD-10-CM codes can be used to 
 evaluate the quality of care provided by healthcare facilities, monitor 
-patient outcomes, and identify areas for improvement. This information can 
+patient outcomes and identify areas for improvement. This information can 
 be used to enhance the overall healthcare delivery system.}
 \item{Reimbursement and Billing: ICD-10-CM codes play a vital role in 
 healthcare reimbursement by providing a standardized method to classify and 
@@ -326,12 +347,13 @@ using these codes, where the set of codes is not restricted to smaller set,
 must take into account their high dimensionality or will require a large 
 number of training samples in order to fit consistent models. Second, 
 categorical variables are usually incorporated into analyses with a contrast 
-encoding such as treatment, one-hot, helmert, etc. Contrast numeric 
+encoding such as treatment, helmert, etc. Contrast numeric 
 representations are orthogonal or, under appropriate statistical assumptions, 
-independent. However, ICD-10-CM codes represent a hierarchical structure, 
+independent with respect to their categories. However, ICD-10-CM codes 
+represent a hierarchical structure, 
 where codes are organized into chapters, blocks, and categories based on the 
 type and anatomical location of the diseases or conditions. Applying 
-traditional contrast encoding methods (one-hot, treatment, etc.) may 
+traditional contrast encoding methods may 
 not fully capture this hierarchical information, potentially resulting in a 
 loss of valuable context and relationships between codes.
 
@@ -346,14 +368,21 @@ providing improved abilities to predict patient mortality;
 and \texttt{EHR2Vec} \cite{ehr2vec} to help analyze sequences of patient 
 visits. Despite their advantages, word embeddings also have certain 
 limitations. First, word embeddings are typically generated at the word or 
-code level, which may not always be sufficient for capturing the hierarchical 
-structure of ICD-10-CM codes. Second, the quality and representativeness of 
+code level, and while word embeddings can capture semantic similarities, they 
+ofen struggle to represent hierarchical representations like those found in 
+ICD-10-CM codes. Second, traditional word embeddings generate a single vector 
+for each word regardless of context. This means that 
+the same code can have different meanings depending on where and when it is 
+used. This is something these models do not capture. Third, word embeddings 
+can have difficulty handling rare codes. Word embeddings typically require 
+a sufficient number of training samples to learn meaningful representations. 
+For rarely used ICD-10-CM codes, the learned embedding might not be reliable. 
+Fourth, traditional word embedding provide static representations and do not change over time. However, in healthcare, the meaning and usages of certain codes can evolve, and these models cannot capture dynamic changes. 
+Finally, the quality and representativeness of 
 the word embeddings depend on the training data used to generate them. If the 
 training data does not adequately cover the entire spectrum of medical 
 conditions or encounters, the embeddings may not capture all relevant 
-relationships or information. Third, many word embeddings do not account for 
-the specific context in which a word appears. This can limit their ability to 
-capture the nuances of medical conditions and the relationships between them.
+relationships or information. 
 
 Large language models (LLMs) address some of the shortcomings of traditional 
 word embeddings through a combination of advanced techniques and 
@@ -375,15 +404,85 @@ their deep architectures and the context in which codes appear. This can help
 capture different levels of granularity and relationships between codes more 
 effectively than traditional word embeddings.
 
+Vector embeddings attempt to optimize the conditional probability of observing 
+the actual output word given an input word (or vice versa, depending on the 
+variant used). For instance, in the skip-gram variant, given a word 
+$w_i$ and a context word $w_j$, the model is trained to maximize the 
+following
+\begin{equation*}
+P(w_j|w_i) = exp(v'{w_j}^T v{w_i}) / \sum (exp(v'{w_k}^T v{w_i}))
+\end{equation*}
+where $v_w$ and $v'_w$ represent the ``input'' and ``output'' vector 
+representations of a word w, and the summation in the denominator is over 
+all words in the vocabulary. The vectors $v_w$ and $v'_w$ are the word 
+embeddings learned by a similarity model.
+
+LLM models also start by converting each word into an 
+initial word embedding using an embedding matrix. However, these initial 
+embeddings are then updated based on the context of the word. This is done by 
+passing the embeddings through several layers of a transformer model, which 
+uses self-attention mechanisms. The output of the transformer is a contextual 
+embedding for each word. Mathematically, the self-attention mechanism can be 
+represented as
+\begin{equation*}
+\text{Attention}(Q, K, V) = \text{softmax}(QK^T/\sqrt{d}) V
+\end{equation*}
+where $Q$, $K$, and $V$ represent the query, key, and value matrices, which 
+are derived from the input embeddings. The softmax function ensures that the 
+weights of different words sum to 1, and the $\sqrt{d}$ in the denominator is 
+a scaling factor that improves the stability of the gradients during training. 
+The resulting matrix product is a weighted sum of the value vectors, where the 
+weights depend on the similarity between the query and key vectors.
+
+To generate an embedding for a sentence or description, one common approach is to take the average of the contextual embeddings of the words in the sentence:
+\begin{equation*}
+E(D) = \frac{1}{n } \sum E(w_i)
+\end{equation*}
+Here, $E(D)$ is the embedding for the description, $E(w_i)$ is the contextual 
+embedding for word $w_i$, and the sum is over all words in the description.
+
+The key difference between the two methods is that vector embeddings generate 
+a single, static embedding for each word, while LLMs generates a dynamic, 
+context-dependent embedding. This allows an LLM to capture nuances in meaning 
+that can't be represented with static embeddings.
+
+There are several Bidirectional Encoder Representations from Transformers 
+(BERT) or similar transformer-based models that have been used 
+to generate embeddings for ICD-10-codes including ClinicalBERT 
+\cite{huang2019,alsentzer2019}, BioBERT \cite{lee2020}, and
+Med-BERT \cite{rasmy2021}, but to our knowledge none of the current 
+literature includes the 
+applications of these models for the purpose of generating embeddings. That 
+said, BERT has a maximum input length of 512 tokens. This would not be an 
+issue for generating an embedding for a single ICD-10-CM code description. But 
+for processing a long list of codes at once, or if one was to include 
+additional context like patient notes or medical history, one could potentially 
+exceed this limit.
+
+LLM generated embeddings address many of these limitations. They take into 
+account the surrounding words or tokens, allowing for a more nuanced 
+representation of words and codes in different contexts. This helps in 
+capturing the semantic relationships between codes more effectively. These 
+models are pre-trained on vast amounts of text data, allowing them to learn 
+general language representations before being fine-tuned for specific tasks. 
+This pre-training enables the models to leverage existing knowledge and 
+adapt more effectively to new tasks, even with limited task-specific data. 
+LLMs can be incrementally updated or fine-tuned with new data, allowing them 
+to adapt to evolving medical knowledge and practices more effectively than 
+static word embeddings. And, while not explicitly designed for hierarchical 
+data like ICD-10-CM codes, LLMs can implicitly learn hierarchical 
+relationships through their deep architectures and the context in which codes 
+appear. This can help capture different levels of granularity and relationships between codes more effectively than traditional word embeddings.
+
 This paper describes data sets provided as \texttt{.csv} files, which are 
 available online, ICD-10-CM codes 
 to embeddings (a numeric vector of values), based on their descriptions. The 
 embeddings were generated using the BioGPT LLM \cite{luo2022},which was trained on the biomedical literature including PubMed \cite{pubmed}, 
 PubMed Central \cite{pubmedcentral}, and clinical notes from MIMIC-III 
-\cite{mimiciii}. This model was shown to do 
-a better job of encoding context and relational information than competitors 
-in the medical domain. Since the dimension of the embedding LLM is of high 
-dimension (42,384), we provide dimension-reduced versions in 1,000, 100, 50, 
+\cite{mimiciii}. This model was shown to be superior at 
+encoding context and relational information than competitors 
+in the medical domain. Since the dimension of the embedding LLM is relatively
+high (42,384), we provide dimension-reduced versions in 1,000, 100, 50, 
 and 10 dimensions. The model generating the data were validated in two ways. 
 The first way validates the dimension reduction. The embedding data were 
 compressed using an auto-encoder. The out-of-sample accuracy of a validation 
@@ -393,7 +492,7 @@ the dimension of the data down to as few as 10 dimensions while maintaining
 the ability to reproduce the original embeddings, with the fidelity decreasing 
 as the reduced-dimension representation decreases. The second way validates 
 the conceptual representation by creating a supervised model to estimate the 
-ICD-10-CM hiearchical categories. Again we see as the dimension of the 
+ICD-10-CM hierarchical categories. Again, we see as the dimension of the 
 compressed representation decreases the model accuracy decreases. Since 
 multiple compression levels are provided, users are free to choose whichever 
 suits their needs, allowing them to trade off accuracy for dimensionality.
@@ -426,12 +525,12 @@ The embedding process involves tokenizing
 textual phrases into tokens (words, subwords, or characters) and mapping them 
 to unique vocabulary IDs. Token IDs are passed through an embedding layer, 
 resulting in a sequence of continuous embedding vectors. Positional encodings 
-are added element-wise to these vectors, enabling the model to capture token 
+are added elementwise to these vectors, enabling the model to capture token 
 order and relative positions. The embeddings are then contextualized by 
 passing them through the model's layers. An attention mask selectively 
 controls information flow in the attention mechanism, allowing the model to 
 weigh the importance of input tokens when generating contextualized embeddings 
-in a 42,384 dimensional space.
+in a 42,384-dimension space.
 
 The embedding is then compressed using an autoencoder. The autoencoder used
 here is 
@@ -457,7 +556,7 @@ In addition to the 2019 validation the models selected for distribution were
 tested on the 2020-2022 data sets to ensure their performance is comparable
 over years. The results are shown in Table \ref{tab:autoencoder_year}. 
 It should be noted that the ICD-10-CM codes do not vary much from
-one year to the the next, so we should not expect large differences. As 
+one year to the next, so we should not expect large differences. As 
 expected, the mean square error and coefficients of determination are similar 
 to the 2019 data.
 
@@ -528,7 +627,9 @@ library(stringr)
 # Download the locations of the embeddings.
 tf = tempfile()
 download.file(
-  "https://github.com/kaneplusplus/icd-10-cm-embedding/blob/main/icd10_dl.rds?raw=true",
+  paste0("https://github.com/kaneplusplus/",
+         "icd-10-cm-embedding/blob/main/",
+         "icd10_dl.rds?raw=true"),
   tf
 )
 dl = readRDS(tf)
@@ -570,11 +671,24 @@ ggplot(icd10p, aes(x = tSNE1, y = tSNE2, color = `Leading Letter`)) +
 
 \vspace{2mm}
 
-The output visualization is presented in Figure \ref{fig:tsne} and shows that 
+The output visualization is presented in Figure 1 %\ref{fig:tsne} 
+and shows that 
 a subset of the circulatory diseases (I) and
 nervous system diseases (G) are well-differentiated from other conditions. It
 also shows overlap between other conditions related to K (digestive diseases), 
-J (respiratory diseases), and I (circulatory).
+J (respiratory diseases), and I (circulatory). While this approach is 
+effective, there are some challenges of which we should be aware. While not 
+insurmountable, they are as follows:
+
+\begin{enumerate}
+\item Interpretability: A significant challenge in machine learning, particularly with complex models like large language models and autoencoders, is interpretability. In healthcare, the ability to understand and explain why a model makes a particular prediction is crucial. This could impact patient trust, clinician adoption, and even legal and regulatory compliance. Techniques like LIME (Local Interpretable Model-Agnostic Explanations) or SHAP (SHapley Additive exPlanations) can be used to improve interpretability, but they don't provide perfect solutions and can be computationally expensive.
+\item Overfitting: Overfitting is a common issue in machine learning where a model learns the training data too well and performs poorly on unseen data. This can be particularly problematic in healthcare, where the stakes are high. Techniques such as cross-validation, regularization, or dropout layers can be used to prevent overfitting.
+\item Data Privacy: Patient data is highly sensitive, and its usage is strictly regulated (e.g., by laws like HIPAA in the US). Even if the data used to generate the embeddings is anonymized, the model must be carefully designed and used to avoid potential privacy leaks.
+\item Generalizability: A model trained on one dataset may not perform well on another due to differences in population characteristics, data collection methods, etc. Ensuring that models generalize well across different settings is a significant challenge.
+\item Quality of Input Data: The quality of the embeddings depends heavily on the quality of the input data. If the descriptions associated with the ICD-10-CM codes are inaccurate or not comprehensive, the resulting embeddings may also be flawed. This is a fundamental issue in any data-driven approach: "garbage in, garbage out."
+\item Capturing Hierarchical Structure: The ICD-10-CM coding system has a hierarchical structure where certain codes are nested within broader categories. While embeddings generated from code descriptions may capture semantic meaning, they might not inherently capture this hierarchical structure. Advanced techniques or additional processing might be required to represent this structure effectively. This challenge is the one most specific to ICD 10 codes. An LLM trained to generate embeddings from descriptions can capture semantic similarity between different descriptions, but it might not explicitly capture the hierarchical structure. For example, I might recognize that ``hypertension'' and ``cardiovascular disease'' are related concepts, but it might not understand that hypertension is a
+specific type of cardiovascular disease.
+\end{enumerate}
 
 \section*{Conclusions}
 
@@ -589,13 +703,23 @@ anticipated to be highly valuable for researchers incorporating ICD-10-CM
 codes into their analyses, retaining contextual information. This approach 
 has the potential to significantly improve the utility of ICD-10-CM codes in 
 biomedical informatics and enable more advanced analyses in the field.
+Data analysts can easily incorporate them into their own analyses by 
+substituting the embedding values for other, lower-information representations
+including the categorical ones described above to derive the benefits
+of the conceptual information encoded in their embedding.
+Future work will address some of the challenges of capturing hierarchical
+structure in ICD-10-CM coding systems, experimenting with Ontology-based 
+methods, hierarchical clustering, hierarchial autoencoding, graph neural 
+networks and incorporating hierarchical information in training.
 
 \begin{backmatter}
 
 %\section*{Acknowledgements}%% if any
 %Text for this section\ldots
 
-\section*{Funding}%% if any
+\section*{Declarations}
+
+\subsection*{Funding}%% if any
 
 This work was supported by the National Institute on Aging of the 
 National Institutes of Health (NIH) through a grant to Yale 
@@ -611,20 +735,53 @@ This work was also partially supported by the Yale Clinical and
 Translational Science award (UL1 TR001863) and the Yale Claude D. Pepper 
 Center (P30AG021342).
 
+\section*{Competing interests}
+
+The authors declare that they have no competing interests.
+
+\subsection*{Ethics approval}
+
+Not applicable.
+
+\subsection*{Consent to participate}
+
+Not applicable.
+
+\subsection*{Consent for publication}
+
+Not applicable.
+
 %\section*{Abbreviations}%% if any
 %Text for this section\ldots
 
-\section*{Availability of data and materials}%% if any
+\subsection*{Availability of data and materials}%% if any
 
-All data and code presented here along with documentation for 
+All data presented here along with documentation for 
 reproducing presented materials is available at 
 https://github.com/kaneplusplus/icd-10-cm-embedding.
 
+\subsection*{Code availability}%% if any
+
+All code presented here along with documentation for 
+reproducing presented materials is available at 
+https://github.com/kaneplusplus/icd-10-cm-embedding.
+
+\subsection*{Authors' contributions}
+
+Kane proposed, implemented, and created the dataset and wrote the article. 
+Ganz provided direction for the research and validated results manually. 
+King provided assessment of the model, a detailed analysis of the limitations 
+of vector based and BERT approaches, a discussion of LLM 
+limitations and feedback.
+Esserman, Latham, and Green provided feedback and made suggestions through the 
+entire process. 
+
+\subsection{Acknowledgements}
+
+Not applicable.
+
 %\section*{Ethics approval and consent to participate}%% if any
 %Text for this section\ldots
-
-\section*{Competing interests}
-The authors declare that they have no competing interests.
 
 %\section*{Consent for publication}%% if any
 %Text for this section\ldots

@@ -558,7 +558,13 @@ over years. The results are shown in Table \ref{tab:autoencoder_year}.
 It should be noted that the ICD-10-CM codes do not vary much from
 one year to the next, so we should not expect large differences. As 
 expected, the mean square error and coefficients of determination are similar 
-to the 2019 data.
+to the 2019 data. For a given embedding dimension it can be seen that neither
+the coefficient of determination nor the mean square error change significantly 
+over years indicating that the same autoencoder
+could likely be used in subsequent years, while incurring similar loss. This 
+also implies that an incremental approach could be taken in subsequent
+years when regenerating the 
+embeddings where only new codes would need to be processed.
 
 \subsection*{Validating the embedding representation}
 
@@ -579,12 +585,23 @@ categories as the dependent variable and the compressed embedding values as
 the values. The model consists of two hidden layers with 100
 nodes each. The loss function selected was categorical cross-entropy. The
 model was trained using 30 epochs and a validation data set comprised of 10\% of
-samples, chosen at random. The performance in terms of both the accuracy and
-the balanced accuracy is shown in Table \ref{tab:sup_perf}. As
-with most problems of this type, compression of the data corresponds to
-a decrease predictive information.
+samples, chosen at random. 
 
-Of note, the goal in presenting these results is not to necessarily to 
+To contextualize the results, we fit the same model to three 
+Bidirectional Encoder Representations from Transformers (BERT) embeddings that
+have also been trained on biomedical corpuses. The first, MedBERT \cite{medbert}
+was trained with 57.46M tokens collected from biomedical-related data sources 
+and biomedical-related articles from Wikipedia. The second, 
+PubMedBERT-MS-MARCO \cite{pubmedbertqa} was first trained on Pubmed abstracts 
+and full texts and then fine-tuned using the MS-MARCO data set \cite{msmarco} 
+to be optimized for information retrieval task in the medical/health text 
+domain. The third, SapBERT-PubMedBERT, was first trained on Pubmed abstracts 
+and text, and then fine-tuned semantic relationships between relevant
+medical entities using UMLS \cite{umls} biomedical ontologies.
+
+The performance in terms of both the accuracy and
+the balanced accuracy is shown in Table \ref{tab:sup_perf}. The goal 
+in presenting these results is not to necessarily to 
 maximize the prediction accuracy. Rather, it is to show that the embedding 
 retains the
 hierarchical information in the ICD-10-CM codes. Some of the codes correspond to
@@ -593,6 +610,14 @@ for at least some of the conditions might be considered non-systematic.
 Based on this criterion, we can conclude the embedding does retain much of the 
 structural and conceptual information denoted in the descriptions, at least in 
 terms of mapping to key categories of diseases and conditions.
+
+
+The table provides two main results. First, the models using the BioGPT 
+compressed representation significantly outperform models based on BERT
+models with the the former outperforming the latter, even after compressing
+the BioGPT embedding to 10 dimensions. Second, for the BioGPT compressed
+embeddings, great compression of the data correpsonds to a decrease in
+the predictive information in the data, as measured by the accuracy.
 
 \section*{Utility and discussion}
 
@@ -886,6 +911,7 @@ Embedding Dimension & Batch Size & Training Loss & Validation Loss\\
 1000 & 256 & 30.435 & 0.803\\
 \hline
 50 & 128 & 1.053 & 0.894\\
+
 \hline
 \end{tabular}
 \end{table}
@@ -933,22 +959,29 @@ Year of Published ICD-10-CM Code& Embedding Dimension & Mean Square Error& Coef.
 \end{table}
 
 \begin{table}[ht!]
-\caption{The supervised models' performance ordered by increasing embedding dimension.}
+\caption{The supervised models' performance ordered by decreasing balanced accuracy.}
 \label{tab:sup_perf}
-\begin{tabular}{|r|r|r|}
+\begin{tabular}{|r|r|r|r|}
 \hline
-Embedding Dimension & Accuracy & Balanced Accuracy\\
+Model & Embedding Dimension & Accuracy & Balanced Accuracy\\
 \hline
-10 & 0.815 & 0.698\\
+BioGPT Compressed & 1000 & 0.960 & 0.927\\
 \hline
-50 & 0.925 & 0.873\\
+BioGPT Compressed & 100 & 0.935 & 0.891\\
 \hline
-100 & 0.935 & 0.891\\
+BioGPT Compressed & 50 & 0.925 & 0.873\\
 \hline
-1000 & 0.960 & 0.927\\
+BioGPT Compressed & 10 & 0.815 & 0.698\\
+\hline
+PubMedBERT-MS-MARCO & 768 & 0.158 & 0.629\\
+\hline
+SapBERT-PubMedBERT & 768 & 0.159 & 0.616\\
+\hline
+MedBERT & 768 & 0.171 & 0.613\\
 \hline
 \end{tabular}
 \end{table}
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%                               %%

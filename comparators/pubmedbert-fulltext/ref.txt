@@ -1,0 +1,1 @@
+https://huggingface.co/cambridgeltl/SapBERT-from-PubMedBERT-fulltext

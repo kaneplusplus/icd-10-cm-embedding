@@ -15,7 +15,19 @@ registerDoMC(cores = 6)
 
 source("autoencoder.R")
 
-default_device = "mps"
+default_device = "cpu"
+if (backends_cudnn_is_available()) {
+  default_device = "cuda"
+} else if (backends_mps_is_available()) {
+  default_device = "mps"
+} else if (backends_mkldnn_is_available()) {
+  default_device = "mkldnn"
+} else if (backends_openmp_is_available()) {
+  default_device = "openmp"
+} else if (backends_mkl_is_available()) {
+  default_device = "mkl"
+}
+
 
 ae_model_paths = "autoencoder-models" |>
   (\(x) file.path(x, dir(x)))()

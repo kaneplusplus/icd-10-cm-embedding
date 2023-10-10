@@ -1,0 +1,4 @@
+#! /bin/bash
+
+conda create -n icd-10-huggingface -c huggingface transformers pytorch numpy tqdm
+

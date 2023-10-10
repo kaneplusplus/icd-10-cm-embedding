@@ -71,3 +71,4 @@ comp = tibble(
 
 ms = metric_set(accuracy, bal_accuracy)(comp, truth = obs, estimate = pred)
 print(ms)
+saveRDS(ms, "metrics.rds")

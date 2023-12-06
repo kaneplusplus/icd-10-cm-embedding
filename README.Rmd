@@ -254,7 +254,7 @@ R package dependencies:
   - `tidyr`
   - `purrr`
   - `foreach`
-  - `itertoos`
+  - `itertools`
   - `readr`
   - `luz`
   - `tidyr`

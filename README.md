@@ -1,7 +1,3 @@
----
-output: md_document
----
-
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
 # Compressed, Large-Language-Model Embedded Datasets of ICD-10-CM Descriptions
@@ -448,21 +444,12 @@ dimensions and presented them to a scatter plot as shown below.
     )
     dl = readRDS(tf)
 
-<<<<<<< HEAD
-```r
-library(dplyr)
-library(ggplot2)
-library(readr)
-library(Rtsne)
-library(stringr)
-=======
     # Read in the unspecified injury codes.
     tf = tempfile()
     download.file(
       dl$url[dl$year == 2019 & dl$emb_dim == 50],
       tf
     )
->>>>>>> b29d1e9 (Typo.)
 
     icd10s = read_csv(tf) |>
       filter(str_detect(code, "^(G|I|J|K)")) |>
@@ -485,34 +472,6 @@ library(stringr)
         as_tibble()
     )
 
-<<<<<<< HEAD
-# Fit tSNE to the embedding.
-tsne_fit = icd10s |> 
-  select(starts_with("V")) |>
-  scale() |>
-  Rtsne(perplexity = 10)
-
-# Bind the tSNE values to the data set.
-icd10p = bind_cols(
-  icd10s |>
-    select(-starts_with("V")),
-  tsne_fit$Y |>
-    as.data.frame() |>
-    rename(tSNE1="V1", tSNE2="V2") |>
-    as_tibble()
-)
-
-# Visualize the results.
-ggplot(icd10p, aes(x = tSNE1, y = tSNE2, color = `Leading Letter`)) +
-  geom_point() +
-  theme_minimal()
-```
-
-The visualization shows that a subset of the circulatory diseases (I) and
-nervous system diseases (G) are well-differentiated from other conditions. It
-also shows overlap between other conditions related to K (digestive diseases), 
-J (respiratory diseases), and I (circulatory).
-=======
     # Visualize the results.
     ggplot(icd10p, aes(x = tSNE1, y = tSNE2, color = `Leading Letter`)) +
       geom_point() +
@@ -524,7 +483,6 @@ The visualization shows that a subset of the circulatory diseases (I)
 and nervous system diseases (G) are well-differentiated from other
 conditions. It also shows overlap between other conditions related to K
 (digestive diseases), J (respiratory diseases), and I (circulatory).
->>>>>>> b29d1e9 (Typo.)
 
 ## A SAS example
 

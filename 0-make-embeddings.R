@@ -38,12 +38,12 @@ mean_pooling = function(model_output, attention_mask) {
 }
 
 # A function to embed a set of string.
-embed = function(strings) {
+embed = function(strings, max_len = 256) {
   encoded_input = tokenizer(
     strings,
     padding = TRUE,
     truncation = TRUE,
-    max_length = 256,
+    max_length = max_len,
     return_tensors = 'pt'
   )
   model_output = model(
@@ -78,7 +78,7 @@ dir.create("icd-10-cm-embeddings")
 for (year in 2019:2022) {
   print(year)
   icd10 = sprintf("icd-10-cm-codes/icd10cm_codes_%s.txt", year) |>
-    read_fwf(fwf_cols(code = 8, desc = 150))
+    read_fwf(fwf_cols(code = 8, desc = 1000))
 
   write_dir = file.path("icd-10-cm-embeddings", year)
   dir.create(write_dir)

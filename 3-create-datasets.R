@@ -10,8 +10,9 @@ library(progress)
 library(dplyr)
 library(itertools)
 library(foreach)
-library(doMC)
-registerDoMC(cores = 6)
+#library(doMC)
+#registerDoMC(cores = 2)
+registerDoSEQ()
 
 source("autoencoder.R")
 
@@ -63,6 +64,7 @@ get_embedding = function(d, m, device = default_device) {
       xt = m$decoder[[i]](x)
     }
     pb$tick()
+    gc()
     ret = rbind(ret, as.matrix(xt$to(device = "cpu")))
   })
   ret = as_tibble(as.data.frame(ret))
@@ -86,6 +88,7 @@ for (i in seq_len(nrow(xd))) {
       sprintf("icd-10-cm-%s-%04d.csv.gz", xd$year[i], xd$embedding_dim[i])
     )
   )
+  gc()
 }
 
 for (year in 2019:2022) {
@@ -108,6 +111,7 @@ for (year in 2019:2022) {
       gc()
       ret
     }
+    gc()
     print(nrow(df))
     df
   }
